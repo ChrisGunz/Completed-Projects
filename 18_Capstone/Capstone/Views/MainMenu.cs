@@ -22,11 +22,16 @@ namespace Capstone.Views
             this.menuOptions.Add("Q", "Quit");
         }
 
-        public VendingMachine Vendomatic { get; private set; }
+        //  This allows the menu object to access our vending machine
+        public VendingMachine VendOMatic { get; private set; }
 
+        /// <summary>
+        /// Send access to our vending machine object
+        /// </summary>
+        /// <param name="machine">The machine we need to access</param>
         public void RecieveMachine(VendingMachine machine)
         {
-            this.Vendomatic = machine;
+            this.VendOMatic = machine;
         }
 
         /// <summary>
@@ -40,7 +45,9 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-                    foreach (KeyValuePair<string, List<Item>> product in Vendomatic.Stock)
+                    //  Print out the stock of our vending machine
+                    //  TODO: Format these items so everything is lined up
+                    foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
                     {
                         Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
                             $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
@@ -48,15 +55,10 @@ namespace Capstone.Views
                     Console.ReadKey();
                     return true;
                 case "2":
-                    // Get some input form the user, and then do something
-                    int someNumber = GetInteger("Please enter a whole number:");
-                    int anotherNumber = GetInteger("Please enter another whole number:");
-                    Console.WriteLine($"{someNumber} + {anotherNumber} = {someNumber + anotherNumber}.");
-                    Pause("");
+                    //  This is where our user will make a purchase (Not yet implemented)
                     return true;
             }
             return true;
         }
-
     }
 }
