@@ -17,7 +17,7 @@ namespace Capstone.Classes
             this.FilePath = @"..\..\..\..\etc\vendingmachine.csv";
         }
 
-        public List<Item> Restock()
+        public List<Item> CreateList()
         {
             //  Declare a list of items
             List<Item> items = new List<Item>();
@@ -48,5 +48,21 @@ namespace Capstone.Classes
             //  Out list is now complete, send it over
             return items;
         }// End Restock
+
+        public void Restock(List<Item> items)
+        {
+            Dictionary<string, List<Item>> tempDictionary = new Dictionary<string, List<Item>>();
+
+            foreach (Item item in items)
+            {
+                List<Item> tempList = new List<Item>();
+                tempList.Add(item);
+                tempList.Add(item);
+                tempList.Add(item);
+                tempList.Add(item);
+                tempList.Add(item);
+                tempDictionary.Add(item.SlotID, tempList);
+            }
+        }
     }
 }

@@ -17,11 +17,12 @@ namespace Capstone
 
             VendOMatic.Load(stocker.Restock());
 
-            foreach (Item item in VendOMatic.Stock)
+            foreach ()
             {
                 Console.WriteLine($"{item.SlotID}\t{item.ItemCategory}\t{item.ItemName}\t{item.Price}");
             }
             Console.ReadKey();
+
             //MainMenu menu = new MainMenu();
             //menu.Run();
         }
