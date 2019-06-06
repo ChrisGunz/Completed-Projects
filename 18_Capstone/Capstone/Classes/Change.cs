@@ -8,8 +8,7 @@ namespace Capstone.Classes
     {
         public decimal TotalValue()
         {
-            return null; // might be derived ?
+            return 0.0M; // might be derived ?
         }
-        
     }
 }

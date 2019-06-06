@@ -6,11 +6,11 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
+        public List<Item> Stock { get; private set; }
 
-        VendingMachine VendOMatic = new VendingMachine();
-
-
-
+        public void Load(List<Item> items)
+        {
+            this.Stock = items;
+        }
     }
-    
 }

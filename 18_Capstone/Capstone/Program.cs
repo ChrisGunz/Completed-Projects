@@ -15,8 +15,15 @@ namespace Capstone
 
             Stocker stocker = new Stocker();
 
-            MainMenu menu = new MainMenu();
-            menu.Run();
+            VendOMatic.Load(stocker.Restock());
+
+            foreach (Item item in VendOMatic.Stock)
+            {
+                Console.WriteLine($"{item.SlotID}\t{item.ItemCategory}\t{item.ItemName}\t{item.Price}");
+            }
+            Console.ReadKey();
+            //MainMenu menu = new MainMenu();
+            //menu.Run();
         }
     }
 }

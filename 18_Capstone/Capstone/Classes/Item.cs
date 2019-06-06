@@ -17,13 +17,11 @@ namespace Capstone.Classes
 
         public Item(string slotID, string itemName, decimal price, string itemCategory)
         {
+            //  A1|Potato Crisps|3.05|Chip
             this.SlotID = slotID;
             this.ItemCategory = itemCategory;
             this.ItemName = itemName;
             this.Price = price;
         }
-        
-
-
     }
 }

@@ -2,31 +2,51 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Capstone.Classes;
 
 namespace Capstone.Classes
 {
     public class Stocker
     {
-        public List<Item> items;
-
-
+        //public List<Item> items;
         public string FilePath;
 
         public Stocker()
         {
             this.FilePath = Path.GetFullPath(".");
-            this.FilePath = @"..\..\..\etc\vendingmachine.csv";
+            this.FilePath = @"..\..\..\..\etc\vendingmachine.csv";
         }
-        
 
-
-        public List<item> Restock()
+        public List<Item> Restock()
         {
+            //  Declare a list of items
+            List<Item> items = new List<Item>();
 
-        }
+            //  Open the file, read contents
+            using (StreamReader sr = new StreamReader(this.FilePath))
+            {
+                while(!sr.EndOfStream)
+                {
+                    //  Each item in the vendingmachine.csv is formatted like this: A1|Potato Crisps|3.05|Chip
+                    string input = sr.ReadLine();
+                    string[] itemProperties = input.Split('|');
 
-        
+                    //  Item.Price is a decimal and must be cast
+                    decimal price = decimal.Parse(itemProperties[2]);
+
+                    //  Build the item using the Item constructor
+                    Item newItem = new Item(itemProperties[0],
+                        itemProperties[1],
+                        price,
+                        itemProperties[3]);
+
+                    //  Add it to the list
+                    items.Add(newItem);
+                }
+            }// End using
+
+            //  Out list is now complete, send it over
+            return items;
+        }// End Restock
     }
-
-
 }
