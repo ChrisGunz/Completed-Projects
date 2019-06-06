@@ -18,15 +18,19 @@ namespace Capstone
 
             VendOMatic.Load(stocker.Restock());
 
-            foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
-            {
-                Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
-                    $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
-            }
-            Console.ReadKey();
 
-            //MainMenu menu = new MainMenu();
-            //menu.Run();
+            //foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
+            //{
+            //    Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
+            //        $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
+            //}
+
+
+            MainMenu menu = new MainMenu();
+            menu.RecieveMachine(VendOMatic);
+            menu.Run();
+
+            Console.ReadKey();
         }
     }
 }

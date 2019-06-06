@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone.Classes;
+
 
 namespace Capstone.Views
 {
@@ -14,10 +16,17 @@ namespace Capstone.Views
         /// </summary>
         public MainMenu() : base()
         {
-            this.Title = "*** Main Menu ***";
-            this.menuOptions.Add("1", "Option One");
-            this.menuOptions.Add("2", "Add two numbers");
+            this.Title = "*** Vend-O-Matic 500 ***";
+            this.menuOptions.Add("1", "Display Vending Machine Items");
+            this.menuOptions.Add("2", "Purchase");
             this.menuOptions.Add("Q", "Quit");
+        }
+
+        public VendingMachine Vendomatic { get; private set; }
+
+        public void RecieveMachine(VendingMachine machine)
+        {
+            this.Vendomatic = machine;
         }
 
         /// <summary>
@@ -31,7 +40,12 @@ namespace Capstone.Views
             switch (choice)
             {
                 case "1":
-                    // This is just a sample, does nothing
+                    foreach (KeyValuePair<string, List<Item>> product in Vendomatic.Stock)
+                    {
+                        Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
+                            $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
+                    }
+                    Console.ReadKey();
                     return true;
                 case "2":
                     // Get some input form the user, and then do something
