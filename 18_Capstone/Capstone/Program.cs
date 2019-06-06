@@ -1,6 +1,7 @@
 ﻿using Capstone.Views;
 using System;
 using Capstone.Classes;
+using System.Collections.Generic;
 
 namespace Capstone
 {
@@ -17,9 +18,10 @@ namespace Capstone
 
             VendOMatic.Load(stocker.Restock());
 
-            foreach ()
+            foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
             {
-                Console.WriteLine($"{item.SlotID}\t{item.ItemCategory}\t{item.ItemName}\t{item.Price}");
+                Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
+                    $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
             }
             Console.ReadKey();
 

@@ -17,15 +17,14 @@ namespace Capstone.Classes
             this.FilePath = @"..\..\..\..\etc\vendingmachine.csv";
         }
 
-        public List<Item> CreateList()
+        public Dictionary<string, List<Item>> Restock()
         {
-            //  Declare a list of items
+            //  Create a temp list
             List<Item> items = new List<Item>();
-
             //  Open the file, read contents
             using (StreamReader sr = new StreamReader(this.FilePath))
             {
-                while(!sr.EndOfStream)
+                while (!sr.EndOfStream)
                 {
                     //  Each item in the vendingmachine.csv is formatted like this: A1|Potato Crisps|3.05|Chip
                     string input = sr.ReadLine();
@@ -45,12 +44,6 @@ namespace Capstone.Classes
                 }
             }// End using
 
-            //  Out list is now complete, send it over
-            return items;
-        }// End Restock
-
-        public void Restock(List<Item> items)
-        {
             Dictionary<string, List<Item>> tempDictionary = new Dictionary<string, List<Item>>();
 
             foreach (Item item in items)
@@ -63,6 +56,7 @@ namespace Capstone.Classes
                 tempList.Add(item);
                 tempDictionary.Add(item.SlotID, tempList);
             }
+            return tempDictionary;
         }
     }
 }
