@@ -13,6 +13,12 @@ namespace Capstone.Classes
             this.Cart = new List<Item>();
       
         }
-        // to do list: EAT FUNCTION
+        public void Eat()
+        {
+            foreach (Item item in Cart)
+            {
+                Console.WriteLine($"You eat the {item.ItemName}. {item.Eat()}");
+            }
+        }
     }
 }

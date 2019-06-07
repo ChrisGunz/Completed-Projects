@@ -8,24 +8,21 @@ namespace Capstone.Classes
     {
         public Dictionary <string,List<Item>> Stock { get; private set; }
         public decimal Balance { get; private set; } = 0;
-
-      
-        // TRAIL CODE ********************************
-        //public decimal Balance { get; }
-       
-
-        //public VendingMachine(decimal currentBalance)
-        //{
-        //    currentBalance = 0;
-        //    this.Balance = currentBalance;
-        //}
-
-        /// trial code
-        
        
         public void Load(Dictionary<string, List<Item>> items)
         {
             this.Stock = items;
+            this.Balance = 0;
+        }
+
+        public void ShowContents()
+        {
+            Console.Clear();
+            foreach (KeyValuePair<string, List<Item>> product in this.Stock)
+            {
+                Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
+                    $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
+            }
         }
 
         public void FeedMoney(decimal money)

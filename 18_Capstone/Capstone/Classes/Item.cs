@@ -43,5 +43,21 @@ namespace Capstone.Classes
             this.Price = price;
         }
         #endregion
+
+        public string Eat()
+        {
+            switch(this.ItemCategory)
+            {
+                case "chip":
+                    return "Crunch Crunch, Yum!";
+                case "candy":
+                    return "Munch Munch, Yum!";
+                case "drink":
+                    return "Glug Glug, Yum!";
+                case "gum":
+                    return "Chew Chew, Yum!";
+            }
+            return "Yum!";
+        }
     }
 }

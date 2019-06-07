@@ -9,6 +9,7 @@ namespace Capstone.Classes
     public class PurchaseMenu : CLIMenu
     {
         private Change change;
+
         public PurchaseMenu() : base()
         {
             this.menuOptions = new Dictionary<string, string>();
@@ -49,6 +50,7 @@ namespace Capstone.Classes
                     return true;
 
                 case "2":
+                    VendOMatic.ShowContents();
                     Console.WriteLine("please Enter a slotID on item you want");
                     selection = Console.ReadLine().Trim();
                     this.MakePurchase(selection);
@@ -56,6 +58,11 @@ namespace Capstone.Classes
 
                 case "3":
                     Console.WriteLine(this.change.TotalValue(VendOMatic.Balance));
+                    Stocker stocker = new Stocker();
+                    log.Log("GIVE CHANGE", VendOMatic.Balance, 0.0M);
+                    VendOMatic.Load(stocker.Restock());
+                    this.Customer.Eat();
+                    Console.ReadKey();
                     return false;
 
                 case "Q":
@@ -106,65 +113,51 @@ namespace Capstone.Classes
         private void MakePurchase(string selection)
         {
             decimal startBalance = VendOMatic.Balance;
+
+            //  Using this variable to keep track of our transaction's validity
+            //  Makes each if statement decoupled from the other
+            //  Otherwise we have a bunch of nested if/else statements that got super messy
+            bool validTransaction = true;
+
             if (selection.Length < 2)
             {
                 Console.WriteLine("Invalid slot ID, transaction denied.");
+                validTransaction = false;
             }
-            else
+            string slotID = selection.Substring(0, 2).ToUpper();
+            if (validTransaction && !VendOMatic.Stock.ContainsKey(slotID))
             {
-                string slotID = selection.Substring(0, 2).ToUpper();
-                if (!VendOMatic.Stock.ContainsKey(slotID))
+                Console.WriteLine("Invalid slot ID, transaction denied.");
+                validTransaction = false;
+            }
+            
+            if (validTransaction && VendOMatic.Stock[slotID].Count < 1)
+            {
+                Console.WriteLine("This item is sold out.");
+                validTransaction = false;
+            }
+
+            //  If validTransaction is still true, we know we have a valid key
+            if (validTransaction)
+            {
+                Item purchaseItem = VendOMatic.Stock[slotID][0];
+
+                if (validTransaction && VendOMatic.Balance < purchaseItem.Price)
                 {
-                    Console.WriteLine("Invalid slot ID, transaction denied.");
+                    Console.WriteLine("Insufficient funds, transaction denied.");
+                    validTransaction = false;
                 }
-                else
+
+                if (validTransaction)
                 {
-                    Item purchaseItem = VendOMatic.Stock[slotID][0];
-
-                    if (!VendOMatic.Stock.ContainsKey(slotID))
-                    {
-                        Console.WriteLine("Invalid slot ID, transaction denied.");
-                    }
-                    else if (VendOMatic.Stock[slotID].Count < 1)
-                    {
-                        Console.WriteLine("This item is sold out.");
-                    }
-                    else if (VendOMatic.Balance < purchaseItem.Price)
-                    {
-                        Console.WriteLine("Insufficient funds, transaction denied.");
-                    }
-                    else
-                    {
-
-                        Customer.Cart.Add(purchaseItem);
-                        VendOMatic.Stock[slotID].RemoveAt(0);
-                        VendOMatic.Purchase(purchaseItem.Price);
-                        log.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
-                        Console.WriteLine($"You bought {purchaseItem.ItemName}.");
-                       
-                    }
+                    Customer.Cart.Add(purchaseItem);
+                    VendOMatic.Stock[slotID].RemoveAt(0);
+                    VendOMatic.Purchase(purchaseItem.Price);
+                    log.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
+                    Console.WriteLine($"You bought {purchaseItem.ItemName}.");
                 }
             }
             Console.ReadKey();
         }
     }
-}    
-//{
-            //    Item purchaseItem = VendOMatic.Stock[selection][0];
-            //    if (VendOMatic.Stock[selection].Count == 0)
-            //    {
-            //        Console.WriteLine("selection is SOLD OUT!");
-            //    }
-            //    else if (purchaseItem.Price > VendOMatic.Balance)
-            //    {
-            //        Console.WriteLine("you dont have enugh money for this item");
-            //    }
-            //    else
-            //    {
-            //        Customer.Cart.Add(purchaseItem);
-            //        VendOMatic.Stock[selection].RemoveAt(0);
-            //        VendOMatic.Purchase(purchaseItem.Price);
-            //        Console.WriteLine($"You bought {purchaseItem.ItemName}.");
-            //        Console.ReadKey();
-            //    }
-            //}
+}

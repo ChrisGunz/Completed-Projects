@@ -35,12 +35,7 @@ namespace Capstone.Views
                 case "1":
                     //  Print out the stock of our vending machine
                     //  TODO: Format these items so everything is lined up
-                    Console.Clear();
-                    foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
-                    {
-                        Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
-                            $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
-                    }
+                    VendOMatic.ShowContents();
                     Console.ReadKey();
                     return true;
                 case "2":
