@@ -7,21 +7,41 @@ namespace Capstone.Classes
 {
     public class Item
     {
-        public string SlotID { get; private set; }
-
+        #region Properties
+        /// <summary>
+        /// The slot ID of this item in our vending machine
+        /// </summary>
+        public string SlotID { get; }
+        /// <summary>
+        /// The name of the vending machine product
+        /// </summary>
         public string ItemName { get; }
-
-        public decimal Price { get; private set; }
-
+        /// <summary>
+        /// The price of this item
+        /// </summary>
+        public decimal Price { get; }
+        /// <summary>
+        /// The category of this item (chip, candy, drink, gum)
+        /// </summary>
         public string ItemCategory { get; }
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// Constructor for Item, takes 4 arguments
+        /// </summary>
+        /// <param name="slotID">This item's slot ID</param>
+        /// <param name="itemName">This Item's name</param>
+        /// <param name="price">This item's price</param>
+        /// <param name="itemCategory">This item's category (chip, candy, drink, gum)</param>
         public Item(string slotID, string itemName, decimal price, string itemCategory)
         {
-            //  A1|Potato Crisps|3.05|Chip
+            //  Format: A1|Potato Crisps|3.05|Chip
             this.SlotID = slotID;
             this.ItemCategory = itemCategory;
             this.ItemName = itemName;
             this.Price = price;
         }
+        #endregion
     }
 }

@@ -6,6 +6,9 @@ namespace Capstone.Classes
 {
     public class Change 
     {
+        public decimal TotalValue()
+        {
+            return 0.0M;
         
         
         //public int TenDollarBills { get; }
