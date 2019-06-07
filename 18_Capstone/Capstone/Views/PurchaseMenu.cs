@@ -8,6 +8,7 @@ namespace Capstone.Classes
 {
     public class PurchaseMenu : CLIMenu
     {
+        private Change change;
         public PurchaseMenu() : base()
         {
             this.menuOptions = new Dictionary<string, string>();
@@ -16,6 +17,7 @@ namespace Capstone.Classes
             this.menuOptions.Add("2", "Select Product");
             this.menuOptions.Add("3", "Finish Transaction");
             this.menuOptions.Add("Q", "Back to Main Menu");
+            this.change = new Change();
         }
 
         protected override bool ExecuteSelection(string choice)
@@ -53,7 +55,8 @@ namespace Capstone.Classes
                     return true;
 
                 case "3":
-                    //  Finish transaction
+                    Console.WriteLine(this.change.TotalValue(VendOMatic.Balance));
+                    return false;
 
                 case "Q":
                     return false;
@@ -63,37 +66,46 @@ namespace Capstone.Classes
 
         private void AddMoney(string choice)
         {
-
+            decimal startBalance = VendOMatic.Balance;
             switch (choice)
             {
                 case "1":
                     VendOMatic.FeedMoney(0.01M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "2":
                     VendOMatic.FeedMoney(0.05M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "3":
                     VendOMatic.FeedMoney(0.1M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "4":
                     VendOMatic.FeedMoney(0.25M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "5":
                     VendOMatic.FeedMoney(1.0M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "6":
                     VendOMatic.FeedMoney(2.0M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "7":
                     VendOMatic.FeedMoney(5.0M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "8":
                     VendOMatic.FeedMoney(10.0M);
+                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
             }
         }
         private void MakePurchase(string selection)
         {
+            decimal startBalance = VendOMatic.Balance;
             if (selection.Length < 2)
             {
                 Console.WriteLine("Invalid slot ID, transaction denied.");
@@ -123,10 +135,13 @@ namespace Capstone.Classes
                     }
                     else
                     {
+
                         Customer.Cart.Add(purchaseItem);
                         VendOMatic.Stock[slotID].RemoveAt(0);
                         VendOMatic.Purchase(purchaseItem.Price);
+                        log.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
                         Console.WriteLine($"You bought {purchaseItem.ItemName}.");
+                       
                     }
                 }
             }

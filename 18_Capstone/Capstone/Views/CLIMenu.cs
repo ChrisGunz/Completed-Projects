@@ -22,6 +22,8 @@ namespace Capstone.Views
         /// </summary>
         protected string Title { get; set; }
 
+        protected AuditLog log { get; private set; }
+
         //  This allows the menu object to access our vending machine
         public VendingMachine VendOMatic { get; protected set; }
         // *******
@@ -31,6 +33,7 @@ namespace Capstone.Views
         /// </summary>
         public CLIMenu()
         {
+            this.log = new AuditLog();
             this.menuOptions = new Dictionary<string, string>();
         }
 
