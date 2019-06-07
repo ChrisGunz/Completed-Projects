@@ -29,7 +29,7 @@ namespace Capstone.Views
         /// Send access to our vending machine object
         /// </summary>
         /// <param name="machine">The machine we need to access</param>
-        public void RecieveMachine(VendingMachine machine)
+        public void ReceiveMachine(VendingMachine machine)
         {
             this.VendOMatic = machine;
         }
@@ -55,7 +55,12 @@ namespace Capstone.Views
                     Console.ReadKey();
                     return true;
                 case "2":
-                    //  This is where our user will make a purchase (Not yet implemented)
+                    //  The purchase sub menu
+                    {
+                        PurchaseMenu purchaseMenu = new PurchaseMenu();
+                        purchaseMenu.ReceiveMachine(VendOMatic);
+                        purchaseMenu.Run();
+                    }
                     return true;
             }
             return true;

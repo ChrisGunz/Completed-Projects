@@ -16,8 +16,8 @@ namespace Capstone
 
             //  Create a menu object and give it access to VendOMatic
             MainMenu menu = new MainMenu();
-            menu.RecieveMachine(VendOMatic);
-            menu.Run();
+            menu.ReceiveMachine(VendOMatic);
+            menu.Run();//   Almost everything happens within the menu object
 
             Console.ReadKey();
         }

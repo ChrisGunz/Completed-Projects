@@ -8,6 +8,9 @@ namespace Capstone.Classes
 {
     public class Stocker
     {
+        /// <summary>
+        /// Path to the vendingmachine.csv file, which will be defined as a relative path in the constructor
+        /// </summary>
         public string FilePath;
 
         /// <summary>
@@ -41,13 +44,9 @@ namespace Capstone.Classes
                     //  Each item in the vendingmachine.csv is formatted like this: A1|Potato Crisps|3.05|Chip
                     string input = sr.ReadLine();
                     string[] itemProperties = input.Split('|');
-
-                    //  Item.Price is a decimal and must be cast
                     decimal price = decimal.Parse(itemProperties[2]);
 
-                    //  Build the item using the Item constructor
                     Item newItem = new Item(itemProperties[0], itemProperties[1], price, itemProperties[3]);
-                    //  Add our item to the list
                     items.Add(newItem);
                 }
             }// End using
@@ -57,11 +56,12 @@ namespace Capstone.Classes
             foreach (Item item in items)
             {
                 List<Item> tempList = new List<Item>();
-                //  Five of each item
+
                 for(int i = 0; i < 5; i++)
                 {
                     tempList.Add(item);
                 }
+
                 tempDictionary.Add(item.SlotID, tempList);
             }
             return tempDictionary;
