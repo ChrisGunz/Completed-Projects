@@ -91,7 +91,7 @@ namespace Capstone.Classes
                     break;
             }
         }
-        public void MakePurchse(string selection)
+        private void MakePurchase(string selection)
         {
             Item purchaseItem = VendOMatic.Stock[selection][0];
             if (!VendOMatic.Stock.ContainsKey(selection))
@@ -109,7 +109,9 @@ namespace Capstone.Classes
             }
             else
             {
-                
+                customer.Cart.Add(purchaseItem);
+                VendOMatic.Stock[selection].RemoveAt(0);
+                VendOMatic.Purchase(purchaseItem.Price);
             }
         }
         

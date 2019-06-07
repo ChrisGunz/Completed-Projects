@@ -35,5 +35,9 @@ namespace Capstone.Classes
             //  Amount of money will be determined through the menu
             this.Balance += money;
         }
+        public void Purchase(decimal money)
+        {
+            this.Balance -= money;
+        }
     }
 }
