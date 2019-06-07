@@ -24,14 +24,16 @@ namespace Capstone.Views
 
         //  This allows the menu object to access our vending machine
         public VendingMachine VendOMatic { get; private set; }
-
+        // *******
+        public Customer customer { get; private set; }
         /// <summary>
         /// Send access to our vending machine object
         /// </summary>
         /// <param name="machine">The machine we need to access</param>
-        public void ReceiveMachine(VendingMachine machine)
+        public void Receive(VendingMachine machine, Customer cust)
         {
             this.VendOMatic = machine;
+            this.customer = cust;
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace Capstone.Views
                     //  The purchase sub menu
                     {
                         PurchaseMenu purchaseMenu = new PurchaseMenu();
-                        purchaseMenu.ReceiveMachine(VendOMatic);
+                        purchaseMenu.Receive(VendOMatic, this.customer);
                         purchaseMenu.Run();
                     }
                     return true;

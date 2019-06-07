@@ -14,9 +14,10 @@ namespace Capstone
             Stocker stocker = new Stocker();
             VendOMatic.Load(stocker.Restock());
 
+            Customer customer = new Customer();
             //  Create a menu object and give it access to VendOMatic
             MainMenu menu = new MainMenu();
-            menu.ReceiveMachine(VendOMatic);
+            menu.Receive(VendOMatic, customer);
             menu.Run();//   Almost everything happens within the menu object
 
             Console.ReadKey();

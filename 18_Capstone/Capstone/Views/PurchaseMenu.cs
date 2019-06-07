@@ -20,13 +20,14 @@ namespace Capstone.Classes
 
         protected override bool ExecuteSelection(string choice)
         {
+            string selection = "";
             switch(choice)
             {
                 case "1":
                     Console.WriteLine("*** Feed money ***");
                     Console.WriteLine($"***Current balance: ${VendOMatic.Balance}***");
                     Console.WriteLine("1. Add 1¢");
-                    Console.WriteLine("2.Add 5¢");
+                    Console.WriteLine("2. Add 5¢");
                     Console.WriteLine("3. Add 10¢");
                     Console.WriteLine("4. Add 25¢");
                     Console.WriteLine("5. Add $1");
@@ -35,7 +36,7 @@ namespace Capstone.Classes
                     Console.WriteLine("8. Add $10");
                     Console.WriteLine("Q. Quit");
 
-                    string selection = Console.ReadLine().Trim();
+                    selection = Console.ReadLine().Trim();
                     selection = selection.Substring(0, 1).ToUpper();
                     if (selection != "Q")
                     {
@@ -43,6 +44,15 @@ namespace Capstone.Classes
                     }
                     Console.WriteLine();
                     return true;
+
+                case "2":
+                    Console.WriteLine("please Enter a slotID on item you want");
+                    selection = Console.ReadLine().Trim();
+                    selection = selection.Substring(0, 2).ToUpper();
+                    this.MakePurchase(selection);
+                    return true;
+
+
 
                 case "Q":
                     return false;
@@ -81,9 +91,31 @@ namespace Capstone.Classes
                     break;
             }
         }
+        public void MakePurchse(string selection)
+        {
+            Item purchaseItem = VendOMatic.Stock[selection][0];
+            if (!VendOMatic.Stock.ContainsKey(selection))
+            {
+                Console.WriteLine("Invalid slotID TRANSACTION DENIED");
+
+            }
+            else if (VendOMatic.Stock[selection].Count == 0)
+            {
+                Console.WriteLine("selection is SOLD OUT!");
+            }
+            else if (purchaseItem.Price > VendOMatic.Balance)
+            {
+                Console.WriteLine("you dont have enugh money for this item");               
+            }
+            else
+            {
+                
+            }
+        }
+        
+   
     }
 }
 
-            //switch (choice)
-            //{
+            
             
