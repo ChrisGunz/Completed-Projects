@@ -11,6 +11,7 @@ namespace Capstone.Views
          * Model Data that this menu system needs to operate on goes here.
          ***/
 
+        #region Properties including utility objects
 
         /// <summary>
         /// This is where every sub-menu puts its options for display to the user.
@@ -22,21 +23,29 @@ namespace Capstone.Views
         /// </summary>
         protected string Title { get; set; }
 
-        protected AuditLog log { get; private set; }
+        protected AuditLog FileLog { get; private set; }
 
-        //  This allows the menu object to access our vending machine
+        /// <summary>
+        /// The vending machine that this menu operates
+        /// </summary>
         public VendingMachine VendOMatic { get; protected set; }
-        // *******
+        
+        /// <summary>
+        /// The customer operating the machine
+        /// </summary>
         public Customer Customer { get; protected set; }
+        #endregion
+
         /// <summary>
         /// Constructor - pass in model data here
         /// </summary>
         public CLIMenu()
         {
-            this.log = new AuditLog();
+            this.FileLog = new AuditLog();
             this.menuOptions = new Dictionary<string, string>();
         }
 
+        #region Methods
         /// <summary>
         /// Run starts the menu loop
         /// </summary>
@@ -81,13 +90,14 @@ namespace Capstone.Views
         /// <summary>
         /// This allows the menu to access the required objects
         /// </summary>
-        /// <param name="machine">The vending machine</param>
-        /// <param name="customer">The customer</param>
+        /// <param name="machine">The vending machine that this menu operatese</param>
+        /// <param name="customer">The customer operating the machine</param>
         public void Receive(VendingMachine machine, Customer customer)
         {
             this.VendOMatic = machine;
             this.Customer = customer;
         }
+        #endregion
 
         #region User Input Helper Methods
         /// <summary>
@@ -204,6 +214,5 @@ namespace Capstone.Views
             Console.ReadLine();
         }
         #endregion
-
     }
 }

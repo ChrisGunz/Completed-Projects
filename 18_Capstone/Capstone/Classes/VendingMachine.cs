@@ -17,6 +17,7 @@ namespace Capstone.Classes
 
         public void ShowContents()
         {
+            //  TODO: Make printout line up correctly
             Console.Clear();
             foreach (KeyValuePair<string, List<Item>> product in this.Stock)
             {

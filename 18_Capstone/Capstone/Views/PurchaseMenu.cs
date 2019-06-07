@@ -8,7 +8,10 @@ namespace Capstone.Classes
 {
     public class PurchaseMenu : CLIMenu
     {
-        private Change change;
+        /// <summary>
+        /// The lump of change that our customer will receive upon finishing transaction
+        /// </summary>
+        private readonly Change TotalChange;
 
         public PurchaseMenu() : base()
         {
@@ -18,9 +21,10 @@ namespace Capstone.Classes
             this.menuOptions.Add("2", "Select Product");
             this.menuOptions.Add("3", "Finish Transaction");
             this.menuOptions.Add("Q", "Back to Main Menu");
-            this.change = new Change();
+            this.TotalChange = new Change();
         }
 
+        #region Methods
         protected override bool ExecuteSelection(string choice)
         {
             string selection = "";
@@ -57,9 +61,9 @@ namespace Capstone.Classes
                     return true;
 
                 case "3":
-                    Console.WriteLine(this.change.TotalValue(VendOMatic.Balance));
+                    Console.WriteLine(this.TotalChange.TotalValue(VendOMatic.Balance));
                     Stocker stocker = new Stocker();
-                    log.Log("GIVE CHANGE", VendOMatic.Balance, 0.0M);
+                    FileLog.Log("GIVE CHANGE", VendOMatic.Balance, 0.0M);
                     VendOMatic.Load(stocker.Restock());
                     this.Customer.Eat();
                     Console.ReadKey();
@@ -67,9 +71,9 @@ namespace Capstone.Classes
 
                 case "Q":
                     return false;
-            }
+            }// End switch
             return true;
-        }
+        }// End ExecureSelection
 
         private void AddMoney(string choice)
         {
@@ -78,44 +82,41 @@ namespace Capstone.Classes
             {
                 case "1":
                     VendOMatic.FeedMoney(0.01M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "2":
                     VendOMatic.FeedMoney(0.05M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "3":
                     VendOMatic.FeedMoney(0.1M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "4":
                     VendOMatic.FeedMoney(0.25M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "5":
                     VendOMatic.FeedMoney(1.0M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "6":
                     VendOMatic.FeedMoney(2.0M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "7":
                     VendOMatic.FeedMoney(5.0M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
                 case "8":
                     VendOMatic.FeedMoney(10.0M);
-                    log.Log("FEED MONEY", startBalance, VendOMatic.Balance);
                     break;
             }
-        }
+            FileLog.Log("FEED MONEY", startBalance, VendOMatic.Balance);
+        }// End AddMoney
+
         private void MakePurchase(string selection)
         {
             decimal startBalance = VendOMatic.Balance;
+            //  This is a placeholder Item
+            //  If the slotID in selection is valid, this will be overwritten with that item's information
+            Item purchaseItem = new Item("ID", "Item Name", 0.0M, "Item Category");
 
             //  Using this variable to keep track of our transaction's validity
-            //  Makes each if statement decoupled from the other
+            //  Makes each 'if' statement decoupled from the others
             //  Otherwise we have a bunch of nested if/else statements that got super messy
             bool validTransaction = true;
 
@@ -124,6 +125,7 @@ namespace Capstone.Classes
                 Console.WriteLine("Invalid slot ID, transaction denied.");
                 validTransaction = false;
             }
+
             string slotID = selection.Substring(0, 2).ToUpper();
             if (validTransaction && !VendOMatic.Stock.ContainsKey(slotID))
             {
@@ -140,24 +142,26 @@ namespace Capstone.Classes
             //  If validTransaction is still true, we know we have a valid key
             if (validTransaction)
             {
-                Item purchaseItem = VendOMatic.Stock[slotID][0];
-
-                if (validTransaction && VendOMatic.Balance < purchaseItem.Price)
-                {
-                    Console.WriteLine("Insufficient funds, transaction denied.");
-                    validTransaction = false;
-                }
-
-                if (validTransaction)
-                {
-                    Customer.Cart.Add(purchaseItem);
-                    VendOMatic.Stock[slotID].RemoveAt(0);
-                    VendOMatic.Purchase(purchaseItem.Price);
-                    log.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
-                    Console.WriteLine($"You bought {purchaseItem.ItemName}.");
-                }
+                purchaseItem = VendOMatic.Stock[slotID][0];
             }
+            if (validTransaction && VendOMatic.Balance < purchaseItem.Price)
+            {
+                Console.WriteLine("Insufficient funds, transaction denied.");
+                validTransaction = false;
+            }
+
+            if (validTransaction)
+            {
+                Customer.Cart.Add(purchaseItem);
+                VendOMatic.Stock[slotID].RemoveAt(0);
+                VendOMatic.Purchase(purchaseItem.Price);
+                FileLog.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
+                Console.WriteLine($"You bought {purchaseItem.ItemName}.");
+            }
+
             Console.ReadKey();
-        }
+
+        }// End MakePurchase
+        #endregion
     }
 }

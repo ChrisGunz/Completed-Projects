@@ -44,6 +44,10 @@ namespace Capstone.Classes
         }
         #endregion
 
+        /// <summary>
+        /// The end of the "eat" message when the customer eats the item.
+        /// </summary>
+        /// <returns>The string that the customer's item makes.</returns>
         public string Eat()
         {
             switch(this.ItemCategory)

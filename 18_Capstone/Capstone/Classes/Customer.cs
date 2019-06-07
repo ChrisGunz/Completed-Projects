@@ -6,6 +6,9 @@ namespace Capstone.Classes
 {
     public class Customer
     {
+        /// <summary>
+        /// This represents every item that the customer has purchased
+        /// </summary>
         public List<Item> Cart;
 
         public Customer()
@@ -13,6 +16,10 @@ namespace Capstone.Classes
             this.Cart = new List<Item>();
       
         }
+
+        /// <summary>
+        /// The message when the customer eats the item. Customer eats everything at end of transaction
+        /// </summary>
         public void Eat()
         {
             foreach (Item item in Cart)
