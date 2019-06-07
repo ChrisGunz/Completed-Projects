@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone.Classes;
 
 namespace Capstone.Views
 {
@@ -19,8 +20,12 @@ namespace Capstone.Views
         /// <summary>
         /// The Title of this menu
         /// </summary>
-        public string Title { get; set; }
+        protected string Title { get; set; }
 
+        //  This allows the menu object to access our vending machine
+        public VendingMachine VendOMatic { get; protected set; }
+        // *******
+        public Customer Customer { get; protected set; }
         /// <summary>
         /// Constructor - pass in model data here
         /// </summary>
@@ -38,6 +43,7 @@ namespace Capstone.Views
             {
                 Console.Clear();
                 Console.WriteLine(this.Title);
+                Console.WriteLine($"Balance: {VendOMatic.Balance:C}");
                 Console.WriteLine(new string('=', this.Title.Length));
                 Console.WriteLine("\r\nPlease make a selection:");
                 foreach (KeyValuePair<string, string> menuItem in menuOptions)
@@ -68,6 +74,17 @@ namespace Capstone.Views
         /// <param name="choice">The menu option (key) selected by the user</param>
         /// <returns>True to keep executing the menu (loop), False to exit this menu (break)</returns>
         abstract protected bool ExecuteSelection(string choice);
+
+        /// <summary>
+        /// This allows the menu to access the required objects
+        /// </summary>
+        /// <param name="machine">The vending machine</param>
+        /// <param name="customer">The customer</param>
+        public void Receive(VendingMachine machine, Customer customer)
+        {
+            this.VendOMatic = machine;
+            this.Customer = customer;
+        }
 
         #region User Input Helper Methods
         /// <summary>

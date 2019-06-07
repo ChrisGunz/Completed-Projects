@@ -22,26 +22,12 @@ namespace Capstone.Views
             this.menuOptions.Add("Q", "Quit");
         }
 
-        //  This allows the menu object to access our vending machine
-        public VendingMachine VendOMatic { get; private set; }
-        // *******
-        public Customer customer { get; private set; }
-        /// <summary>
-        /// Send access to our vending machine object
-        /// </summary>
-        /// <param name="machine">The machine we need to access</param>
-        public void Receive(VendingMachine machine, Customer cust)
-        {
-            this.VendOMatic = machine;
-            this.customer = cust;
-        }
-
         /// <summary>
         /// The override of ExecuteSelection handles whatever selection was made by the user.
         /// This is where any business logic is executed.
         /// </summary>
         /// <param name="choice">"Key" of the user's menu selection</param>
-        /// <returns></returns>
+        /// <returns>True if we want to stay in the menu loop, false otherwise</returns>
         protected override bool ExecuteSelection(string choice)
         {
             switch (choice)
@@ -49,6 +35,7 @@ namespace Capstone.Views
                 case "1":
                     //  Print out the stock of our vending machine
                     //  TODO: Format these items so everything is lined up
+                    Console.Clear();
                     foreach (KeyValuePair<string, List<Item>> product in VendOMatic.Stock)
                     {
                         Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
@@ -60,7 +47,7 @@ namespace Capstone.Views
                     //  The purchase sub menu
                     {
                         PurchaseMenu purchaseMenu = new PurchaseMenu();
-                        purchaseMenu.Receive(VendOMatic, this.customer);
+                        purchaseMenu.Receive(VendOMatic, this.Customer);
                         purchaseMenu.Run();
                     }
                     return true;

@@ -6,7 +6,7 @@ using Capstone.Views;
 
 namespace Capstone.Classes
 {
-    public class PurchaseMenu : MainMenu
+    public class PurchaseMenu : CLIMenu
     {
         public PurchaseMenu() : base()
         {
@@ -24,6 +24,7 @@ namespace Capstone.Classes
             switch(choice)
             {
                 case "1":
+                    Console.Clear();
                     Console.WriteLine("*** Feed money ***");
                     Console.WriteLine($"***Current balance: ${VendOMatic.Balance}***");
                     Console.WriteLine("1. Add 1¢");
@@ -48,11 +49,11 @@ namespace Capstone.Classes
                 case "2":
                     Console.WriteLine("please Enter a slotID on item you want");
                     selection = Console.ReadLine().Trim();
-                    selection = selection.Substring(0, 2).ToUpper();
                     this.MakePurchase(selection);
                     return true;
 
-
+                case "3":
+                    //  Finish transaction
 
                 case "Q":
                     return false;
@@ -93,31 +94,62 @@ namespace Capstone.Classes
         }
         private void MakePurchase(string selection)
         {
-            Item purchaseItem = VendOMatic.Stock[selection][0];
-            if (!VendOMatic.Stock.ContainsKey(selection))
+            if (selection.Length < 2)
             {
-                Console.WriteLine("Invalid slotID TRANSACTION DENIED");
-
-            }
-            else if (VendOMatic.Stock[selection].Count == 0)
-            {
-                Console.WriteLine("selection is SOLD OUT!");
-            }
-            else if (purchaseItem.Price > VendOMatic.Balance)
-            {
-                Console.WriteLine("you dont have enugh money for this item");               
+                Console.WriteLine("Invalid slot ID, transaction denied.");
             }
             else
             {
-                customer.Cart.Add(purchaseItem);
-                VendOMatic.Stock[selection].RemoveAt(0);
-                VendOMatic.Purchase(purchaseItem.Price);
-            }
-        }
-        
-   
-    }
-}
+                string slotID = selection.Substring(0, 2).ToUpper();
+                if (!VendOMatic.Stock.ContainsKey(slotID))
+                {
+                    Console.WriteLine("Invalid slot ID, transaction denied.");
+                }
+                else
+                {
+                    Item purchaseItem = VendOMatic.Stock[slotID][0];
 
-            
-            
+                    if (!VendOMatic.Stock.ContainsKey(slotID))
+                    {
+                        Console.WriteLine("Invalid slot ID, transaction denied.");
+                    }
+                    else if (VendOMatic.Stock[slotID].Count < 1)
+                    {
+                        Console.WriteLine("This item is sold out.");
+                    }
+                    else if (VendOMatic.Balance < purchaseItem.Price)
+                    {
+                        Console.WriteLine("Insufficient funds, transaction denied.");
+                    }
+                    else
+                    {
+                        Customer.Cart.Add(purchaseItem);
+                        VendOMatic.Stock[slotID].RemoveAt(0);
+                        VendOMatic.Purchase(purchaseItem.Price);
+                        Console.WriteLine($"You bought {purchaseItem.ItemName}.");
+                    }
+                }
+            }
+            Console.ReadKey();
+        }
+    }
+}    
+//{
+            //    Item purchaseItem = VendOMatic.Stock[selection][0];
+            //    if (VendOMatic.Stock[selection].Count == 0)
+            //    {
+            //        Console.WriteLine("selection is SOLD OUT!");
+            //    }
+            //    else if (purchaseItem.Price > VendOMatic.Balance)
+            //    {
+            //        Console.WriteLine("you dont have enugh money for this item");
+            //    }
+            //    else
+            //    {
+            //        Customer.Cart.Add(purchaseItem);
+            //        VendOMatic.Stock[selection].RemoveAt(0);
+            //        VendOMatic.Purchase(purchaseItem.Price);
+            //        Console.WriteLine($"You bought {purchaseItem.ItemName}.");
+            //        Console.ReadKey();
+            //    }
+            //}
