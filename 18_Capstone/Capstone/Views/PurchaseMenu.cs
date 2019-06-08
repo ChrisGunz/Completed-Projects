@@ -20,7 +20,7 @@ namespace Capstone.Classes
             this.menuOptions.Add("1", "Feed Money");
             this.menuOptions.Add("2", "Select Product");
             this.menuOptions.Add("3", "Finish Transaction");
-            this.menuOptions.Add("Q", "Back to Main Menu");
+            //this.menuOptions.Add("Q", "Back to Main Menu");
             this.TotalChange = new Change();
         }
 
@@ -30,10 +30,10 @@ namespace Capstone.Classes
             string selection = "";
             switch(choice)
             {
-                case "1":
+                case "1":// Feed money option
                     Console.Clear();
                     Console.WriteLine("*** Feed money ***");
-                    Console.WriteLine($"***Current balance: ${VendOMatic.Balance}***");
+                    Console.WriteLine($"*** Current balance: {VendOMatic.Balance:C} ***");
                     Console.WriteLine("1. Add 1¢");
                     Console.WriteLine("2. Add 5¢");
                     Console.WriteLine("3. Add 10¢");
@@ -53,18 +53,23 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     return true;
 
-                case "2":
+                case "2":// Purchase
                     VendOMatic.ShowContents();
-                    Console.WriteLine("please Enter a slotID on item you want");
+                    Console.Write("Please enter a slot ID: ");
                     selection = Console.ReadLine().Trim();
                     this.MakePurchase(selection);
                     return true;
 
-                case "3":
+                case "3":// Finish transaction
+                    //  Print out the change we recieve using our change object
                     Console.WriteLine(this.TotalChange.TotalValue(VendOMatic.Balance));
+
+                    //  Restock the vending machine
                     Stocker stocker = new Stocker();
                     FileLog.Log("GIVE CHANGE", VendOMatic.Balance, 0.0M);
                     VendOMatic.Load(stocker.Restock());
+
+                    //  Eat everything
                     this.Customer.Eat();
                     Console.ReadKey();
                     return false;
@@ -73,7 +78,7 @@ namespace Capstone.Classes
                     return false;
             }// End switch
             return true;
-        }// End ExecureSelection
+        }// End ExecuteSelection
 
         private void AddMoney(string choice)
         {
@@ -114,7 +119,7 @@ namespace Capstone.Classes
             //  This is a placeholder Item
             //  If the slotID in selection is valid, this will be overwritten with that item's information
             Item purchaseItem = new Item("ID", "Item Name", 0.0M, "Item Category");
-
+            string slotID = "";
             //  Using this variable to keep track of our transaction's validity
             //  Makes each 'if' statement decoupled from the others
             //  Otherwise we have a bunch of nested if/else statements that got super messy
@@ -125,8 +130,10 @@ namespace Capstone.Classes
                 Console.WriteLine("Invalid slot ID, transaction denied.");
                 validTransaction = false;
             }
-
-            string slotID = selection.Substring(0, 2).ToUpper();
+            if (validTransaction)
+            {
+                slotID = selection.Substring(0, 2).ToUpper();
+            }
             if (validTransaction && !VendOMatic.Stock.ContainsKey(slotID))
             {
                 Console.WriteLine("Invalid slot ID, transaction denied.");
@@ -140,6 +147,7 @@ namespace Capstone.Classes
             }
 
             //  If validTransaction is still true, we know we have a valid key
+            //  And that the item is not sold out
             if (validTransaction)
             {
                 purchaseItem = VendOMatic.Stock[slotID][0];
@@ -149,14 +157,16 @@ namespace Capstone.Classes
                 Console.WriteLine("Insufficient funds, transaction denied.");
                 validTransaction = false;
             }
-
+            //  if validTransaction is still true here, then every condition above must also be true
             if (validTransaction)
             {
                 Customer.Cart.Add(purchaseItem);
-                VendOMatic.Stock[slotID].RemoveAt(0);
-                VendOMatic.Purchase(purchaseItem.Price);
+                VendOMatic.Purchase(slotID);
+
                 FileLog.Log(purchaseItem.ItemName, startBalance, VendOMatic.Balance);
-                Console.WriteLine($"You bought {purchaseItem.ItemName}.");
+                FileLog.TransactionHistory(purchaseItem);
+
+                Console.WriteLine($"You bought {purchaseItem.ItemName}. Enjoy!");
             }
 
             Console.ReadKey();

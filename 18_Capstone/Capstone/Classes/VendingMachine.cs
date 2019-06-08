@@ -21,21 +21,46 @@ namespace Capstone.Classes
             Console.Clear();
             foreach (KeyValuePair<string, List<Item>> product in this.Stock)
             {
-                Console.WriteLine($"{product.Value[0].SlotID}\t{product.Value[0].ItemCategory}" +
-                    $"\t{product.Value[0].ItemName}\t{product.Value[0].Price}\t{product.Value.Count}");
+                Console.Write($"{product.Key}\t");
+                if(product.Value.Count == 0)
+                {
+                    Console.WriteLine("*** SOLD OUT ***");
+                }
+                else
+                {
+                    Console.Write($"{product.Value[0].ItemCategory}\t");
+                    Console.Write($"{product.Value[0].ItemName}\t\t");
+                    if(product.Value[0].ItemName.Length < 16)
+                    {
+                        Console.Write("\t");
+                        if (product.Value[0].ItemName.Length < 8)
+                        {
+                            Console.Write("\t");
+                        }
+                    }
+                    Console.WriteLine($"{product.Value.Count}\t{product.Value[0].Price:C}");
+                }
             }
         }
 
+        /// <summary>
+        /// Add money to the machine
+        /// </summary>
+        /// <param name="money"></param>
         public void FeedMoney(decimal money)
         {
-            //  The user feeds money into the balance of our machine
-            //  Add to balance however much money is passed in
-            //  Amount of money will be determined through the menu
             this.Balance += money;
         }
-        public void Purchase(decimal money)
+
+        /// <summary>
+        /// Remove money from balance and dispense the requested item
+        /// </summary>
+        /// <param name="money">Amount of money to remove from Balance</param>
+        /// <param name="slotID">Slot of item to be dispensed</param>
+        public void Purchase(string slotID)
         {
-            this.Balance -= money;
+            this.Balance -= this.Stock[slotID][0].Price;
+            this.Stock[slotID].RemoveAt(0);
         }
     }
 }

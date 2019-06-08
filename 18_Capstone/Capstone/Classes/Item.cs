@@ -52,13 +52,13 @@ namespace Capstone.Classes
         {
             switch(this.ItemCategory)
             {
-                case "chip":
+                case "Chip":
                     return "Crunch Crunch, Yum!";
-                case "candy":
+                case "Candy":
                     return "Munch Munch, Yum!";
-                case "drink":
+                case "Drink":
                     return "Glug Glug, Yum!";
-                case "gum":
+                case "Gum":
                     return "Chew Chew, Yum!";
             }
             return "Yum!";

@@ -34,7 +34,6 @@ namespace Capstone.Views
             {
                 case "1":
                     //  Print out the stock of our vending machine
-                    //  TODO: Format these items so everything is lined up
                     VendOMatic.ShowContents();
                     Console.ReadKey();
                     return true;

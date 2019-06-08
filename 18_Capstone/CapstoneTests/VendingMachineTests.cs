@@ -33,14 +33,18 @@ namespace CapstoneTests
         [TestMethod]
         public void TestPurchase()
         {
+            Stocker stocker = new Stocker();
             VendingMachine vendingMachine = new VendingMachine();
+            vendingMachine.Load(stocker.Restock());
             vendingMachine.FeedMoney(100.0m);
+            //  Price of A1 = 3.05
+            vendingMachine.Purchase("A1");
+            Assert.AreEqual(96.95M, vendingMachine.Balance);
+            Assert.AreEqual(4, vendingMachine.Stock["A1"].Count);
 
-            vendingMachine.Purchase(10.0M);
-            Assert.AreEqual(90.0M, vendingMachine.Balance);
-
-            vendingMachine.Purchase(20.0M);
-            Assert.AreEqual(70.0M, vendingMachine.Balance);
+            vendingMachine.Purchase("A1");
+            Assert.AreEqual(93.9M, vendingMachine.Balance);
+            Assert.AreEqual(3, vendingMachine.Stock["A1"].Count);
         }
     }
 }

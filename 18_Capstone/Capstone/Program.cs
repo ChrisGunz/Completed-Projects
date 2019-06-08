@@ -15,12 +15,10 @@ namespace Capstone
             VendOMatic.Load(stocker.Restock());
 
             Customer customer = new Customer();
-            //  Create a menu object and give it access to VendOMatic
+            //  Create a menu object and give it access to VendOMatic and customer
             MainMenu menu = new MainMenu();
             menu.Receive(VendOMatic, customer);
             menu.Run();//   Almost everything happens within the menu object
-
-            Console.ReadKey();
         }
     }
 }
