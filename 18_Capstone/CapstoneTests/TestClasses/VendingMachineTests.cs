@@ -37,6 +37,7 @@ namespace CapstoneTests
             VendingMachine vendingMachine = new VendingMachine();
             vendingMachine.Load(stocker.Restock());
             vendingMachine.FeedMoney(100.0m);
+
             //  Price of A1 = 3.05
             vendingMachine.Purchase("A1");
             Assert.AreEqual(96.95M, vendingMachine.Balance);

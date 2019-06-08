@@ -15,9 +15,13 @@ namespace Capstone.Classes
             this.Balance = 0;
         }
 
+        #region Methods
+
+        /// <summary>
+        /// Print the contents of the vending machine
+        /// </summary>
         public void ShowContents()
         {
-            //  TODO: Make printout line up correctly
             Console.Clear();
             foreach (KeyValuePair<string, List<Item>> product in this.Stock)
             {
@@ -30,6 +34,7 @@ namespace Capstone.Classes
                 {
                     Console.Write($"{product.Value[0].ItemCategory}\t");
                     Console.Write($"{product.Value[0].ItemName}\t\t");
+                    //  Tabs to make sure everything is lined up correctly
                     if(product.Value[0].ItemName.Length < 16)
                     {
                         Console.Write("\t");
@@ -38,6 +43,7 @@ namespace Capstone.Classes
                             Console.Write("\t");
                         }
                     }
+                    //  Available quantity and price
                     Console.WriteLine($"{product.Value.Count}\t{product.Value[0].Price:C}");
                 }
             }
@@ -55,12 +61,12 @@ namespace Capstone.Classes
         /// <summary>
         /// Remove money from balance and dispense the requested item
         /// </summary>
-        /// <param name="money">Amount of money to remove from Balance</param>
-        /// <param name="slotID">Slot of item to be dispensed</param>
+        /// <param name="slotID">Slot to dispense from, key of the item the customer wants</param>
         public void Purchase(string slotID)
         {
             this.Balance -= this.Stock[slotID][0].Price;
             this.Stock[slotID].RemoveAt(0);
         }
+        #endregion
     }
 }

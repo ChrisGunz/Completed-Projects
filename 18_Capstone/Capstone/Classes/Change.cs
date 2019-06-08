@@ -15,11 +15,11 @@ namespace Capstone.Classes
         {
             if (balance == 0.0M)
             {
-                return "the vending machine returned nothing.";
+                return "Vend-O-Matic 500 returned nothing.";
             }
             else//  Balance should never be < 0
             {
-                string message = "the vending machine returned";
+                string message = "Vend-O-Matic 500 returned";
 
                 int coins = (int)(balance / 0.25M);
                 if (coins > 0)
